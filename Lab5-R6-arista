@@ -1,0 +1,57 @@
+! Command: show running-config
+! device: Lab5-R6 (vEOS-lab, EOS-4.28.3M)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname Lab5-R6-arista
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description - To Router-5
+   no switchport
+   ipv6 address 3fff:a10:101:ccc1::6/64
+!
+interface Ethernet2
+   description - To Router-4
+   no switchport
+   ipv6 address 3fff:a10:101:bbb3::6/64
+!
+interface Ethernet3
+   description - To Router-3
+   no switchport
+   ipv6 address 3fff:a10:101:bbb4::6/64
+!
+interface Ethernet4
+!
+interface Loopback0
+   ipv6 address 3fff:a10:101:fff6::6/64
+!
+interface Management1
+!
+ip routing
+!
+ipv6 unicast-routing
+!
+ipv6 route 3fff:a10:6000::/48 Null0
+!
+router bgp 65006
+   router-id 192.168.1.6
+   neighbor group6 peer group
+   neighbor 3fff:a10:101:bbb3::4 peer group group6
+   neighbor 3fff:a10:101:bbb3::4 remote-as 65006
+   neighbor 3fff:a10:101:ccc1::5 peer group group6
+   neighbor 3fff:a10:101:ccc1::5 remote-as 65006
+   !
+   address-family ipv6
+      neighbor 3fff:a10:101:bbb3::4 activate
+      neighbor 3fff:a10:101:ccc1::5 activate
+      network 3fff:a10:6000::/48
+!
+end

@@ -1,0 +1,182 @@
+!
+! Last configuration change at 20:32:46 UTC Thu Jun 26 2025
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Lab5-R4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!         
+redundancy
+!
+no cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no ip address
+ ipv6 address 3FFF:A10:101:FFF4::4/64
+!
+interface GigabitEthernet0/0
+ description - To Router-3
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:BBB1::4/64
+ no cdp enable
+!
+interface GigabitEthernet0/1
+ description - To Router-2
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:AAA3::4/64
+ no cdp enable
+!
+interface GigabitEthernet0/2
+ description - To Router-1
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:AAA4::4/64
+ no cdp enable
+!
+interface GigabitEthernet0/3
+ description - To Router-6
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:BBB3::4/64
+ no cdp enable
+!
+interface GigabitEthernet0/4
+ description - To Router-5
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:BBB5::4/64
+ no cdp enable
+!
+router bgp 65006
+ bgp router-id 192.168.1.4
+ bgp log-neighbor-changes
+ no bgp default ipv4-unicast
+ neighbor group4 peer-group
+ neighbor 3FFF:A10:101:AAA3::2 remote-as 65001
+ neighbor 3FFF:A10:101:AAA3::2 peer-group group4
+ neighbor 3FFF:A10:101:BBB1::3 remote-as 65006
+ neighbor 3FFF:A10:101:BBB1::3 peer-group group4
+ neighbor 3FFF:A10:101:BBB3::6 remote-as 65006
+ neighbor 3FFF:A10:101:BBB3::6 peer-group group4
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+  network 3FFF:A10:4000::/48
+  neighbor 3FFF:A10:101:AAA3::2 activate
+  neighbor 3FFF:A10:101:BBB1::3 activate
+  neighbor 3FFF:A10:101:BBB3::6 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ipv6 route 3FFF:A10:4000::/48 Null0
+!
+!
+!
+control-plane
+!
+banner exec ^CCCCC
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^CCCCC
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* * of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^CCCCC
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end

@@ -1,0 +1,68 @@
+! Command: show running-config
+! device: Lab7-R6-arista (vEOS-lab, EOS-4.28.3M)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname Lab7-R6-arista
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description - To Router-5
+   no switchport
+   ipv6 address 3fff:a10:101:ccc1::6/64
+!
+interface Ethernet2
+   description - To Router-4
+   no switchport
+   ipv6 address 3fff:a10:101:bbb3::6/64
+!
+interface Ethernet3
+   description - To Router-3
+   no switchport
+   ipv6 address 3fff:a10:101:bbb4::6/64
+!
+interface Ethernet4
+   no switchport
+   ipv6 address 3fff:a10:6000:aaaa::1/64
+   ipv6 nd router-preference high
+   ipv6 nd prefix 3fff:a10:6000:aaaa::/64
+   ipv6 nd ra dns-server 3fff:a10:53::53
+!
+interface Loopback0
+   ipv6 address 3fff:a10:101:fff6::6/64
+!
+interface Management1
+!
+ip routing
+!
+ipv6 unicast-routing
+!
+ipv6 route 3fff:a10:6000::/48 Null0
+!
+router bgp 65006
+   router-id 192.168.1.6
+   neighbor group6 peer group
+   neighbor 3fff:a10:101:bbb2::3 peer group group6
+   neighbor 3fff:a10:101:bbb2::3 remote-as 65006
+   neighbor 3fff:a10:101:bbb3::4 peer group group6
+   neighbor 3fff:a10:101:bbb3::4 remote-as 65006
+   neighbor 3fff:a10:101:bbb4::3 peer group group6
+   neighbor 3fff:a10:101:bbb4::3 remote-as 65006
+   neighbor 3fff:a10:101:ccc1::5 peer group group6
+   neighbor 3fff:a10:101:ccc1::5 remote-as 65006
+   !
+   address-family ipv6
+      no neighbor 3fff:a10:101:bbb2::3 activate
+      neighbor 3fff:a10:101:bbb3::4 activate
+      neighbor 3fff:a10:101:bbb4::3 activate
+      neighbor 3fff:a10:101:ccc1::5 activate
+      network 3fff:a10:6000::/48
+!
+end

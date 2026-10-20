@@ -1,0 +1,170 @@
+!
+! Last configuration change at 18:38:54 UTC Fri Jun 27 2025
+!
+version 15.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname Router-5-lab-4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+ethernet lmi ce
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+no cdp run
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no shutdown
+ no ip address
+ ipv6 address 3FFF:A10:101:FFF5::5/64
+ ipv6 ospf 5 area 6
+!
+interface GigabitEthernet0/0
+ no shutdown
+ description - To Router-6
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:CCC1::5/64
+ ipv6 ospf 5 area 6
+ no cdp enable
+!
+interface GigabitEthernet0/1
+ no shutdown
+ description - To Router-3
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:BBB2::5/64
+ ipv6 ospf 5 area 6
+ no cdp enable
+!
+interface GigabitEthernet0/2
+ no shutdown
+ description - To Router-4
+ no ip address
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address 3FFF:A10:101:BBB4::5/64
+ ipv6 ospf 5 area 6
+ no cdp enable
+!
+interface GigabitEthernet0/3
+ no shutdown
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+ no cdp enable
+!
+interface GigabitEthernet0/4
+ no shutdown
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+ no cdp enable
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ipv6 router ospf 5
+ router-id 0.0.0.5
+!
+!
+!
+!
+control-plane
+!
+banner exec ^CCC
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^CCC
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^CCC
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end

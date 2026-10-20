@@ -1,0 +1,24 @@
+For general interface info:
+
+nmcli device show ens3
+nmcli connection up
+
+
+ip addr show ens3
+
+# Disable IPv6 Privacy Extensions
+net.ipv6.conf.all.use_tempaddr = 0
+net.ipv6.conf.default.use_tempaddr = 0
+# Enable IPv6 Privacy Extensions
+net.ipv6.conf.all.use_tempaddr = 2
+net.ipv6.conf.default.use_tempaddr = 2
+
+Disable IPv6 :
+sudo vi /etc/sysctl.conf
+#disable IPv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+
+sudo tcpdump -n -vv -i ens3 icmp6 and ip6[40]==134
+
